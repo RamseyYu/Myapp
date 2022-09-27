@@ -2,6 +2,7 @@ package com.domain;
 
 import com.constant.NumberType;
 
+import java.util.Objects;
 import java.util.Random;
 
 /** 分数类 */
@@ -59,6 +60,25 @@ public class Fraction extends Type {
         }
         /** 为分母赋值 */
         this.denomin =  temp;
+        this.value = (double)this.numer / this.denomin;
+        this.realVal = this.value;
+    }
 
+    public String generateStr() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(numer).append("/").append(denomin);
+        return sb.toString();
+    }
+
+    /** 判断相等 */
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Fraction fraction = (Fraction) o;
+        return  numer == fraction.numer && denomin == fraction.denomin;
+    }
+
+    public int hashCode() {
+        return Objects.hash(numer, denomin);
     }
 }

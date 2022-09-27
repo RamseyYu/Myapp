@@ -2,6 +2,7 @@ package com.domain;
 
 import com.constant.NumberType;
 
+import java.util.Objects;
 import java.util.Random;
 
 /** 普通数类（非分数） */
@@ -19,6 +20,7 @@ public class Ordinary extends Type{
 
     public void setValue(int value) {
         this.value = value;
+        this.realVal = this.value;
     }
 
 
@@ -26,5 +28,16 @@ public class Ordinary extends Type{
     public void getRandom(int range) {
         /** 生成数值 */
         this.value = new Random().nextInt(range) + 1;
+    }
+
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ordinary ordinary = (Ordinary) o;
+        return value == ordinary.value;
+    }
+
+    public int hashCode() {
+        return Objects.hash(value);
     }
 }
