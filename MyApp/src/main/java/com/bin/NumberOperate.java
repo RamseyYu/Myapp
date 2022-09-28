@@ -115,7 +115,6 @@ public class NumberOperate {
     }
 
 
-
     //把中缀表达式转化为后缀表达式集合
     public static List<String> infixExpToSuffixExp(String s) {
         List<String> infixExp = getListString(s);
@@ -182,5 +181,60 @@ public class NumberOperate {
         }
         return list;
     }
+
+    /**
+     * 计算逆波兰表达式
+     *
+     * @param list 用来存储表达式
+     * @return 返回最终计算结果
+     */
+    public static String lastPolandExpression(List<String> list) {
+        //创建一个栈
+        Stack<String> stack = new Stack<>();
+        //遍历存储表达式的list集合
+        for (int i = 0; i < list.size(); i++) {
+            char s = list.get(i).charAt(0);
+            if (isNumber(s + "")) {
+                //如果是数字
+                String str = list.get(i);
+                //入栈
+                stack.push(str);
+            } else {
+                //如果是运算符，取出栈顶元素和次顶元素进行计算
+                String num1 = stack.pop();
+                String num2 = stack.pop();
+                String result = cal(num1, num2, s);
+                //最后将计算结果压入栈中
+                stack.push(String.valueOf(result));
+            }
+        }
+        //返回栈中的最后一个元素，就是计算结果
+        return stack.pop();
+    }
+
+
+    public static String cal(String num1, String num2, int oper) {
+        String res = ""; // 存放计算结果
+        switch (oper) {
+            case '+':
+                res = add(num1, num2);
+                break;
+            case '-':
+                res = subtract(num2, num1);
+                break;
+            case '×':
+                res = multiply(num1, num2);
+                break;
+            case '÷':
+                if (num1.equals("0"))
+                    throw new RuntimeException("0不能作为除数！");
+                res = divide(num2, num1);
+                break;
+            default:
+                break;
+        }
+        return res;
+    }
+
 
 }

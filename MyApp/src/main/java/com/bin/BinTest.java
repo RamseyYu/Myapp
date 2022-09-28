@@ -74,8 +74,18 @@ public class BinTest {
     @Test
     //测试中缀表达式转化为后缀表达式
     public void  testInfixExpToSuffixExp(){
-        List<String> strings = infixExpToSuffixExp("9 + ( ( 3 + 4 ) × 5 ) - 6 ");
-        System.out.println(strings);
+        List<String> strings1 = infixExpToSuffixExp("( ( 9 + 3 ) + 4 ) × 5 - 6 ");
+        List<String> strings2 = infixExpToSuffixExp("1/3 + 2/5 ");
+        System.out.println(strings1);
+        System.out.println(strings2);
     }
 
+    @Test
+    //测试后缀表达式计算器
+    public void testLastPolandExpression(){
+        String  v = lastPolandExpression(infixExpToSuffixExp("( ( 9 + 3 ) + 4/5 ) × 5 - 6 "));
+        String a = lastPolandExpression(infixExpToSuffixExp("( 1/3 + 1 ) × 2"));
+        System.out.println(v);
+        System.out.println(a);
+    }
 }
