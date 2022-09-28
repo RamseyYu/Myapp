@@ -4,12 +4,9 @@ package com.bin;/*
  */
 
 public class NumberOperate {
-    static int x = 0;  //分子
-    static int y = 0;  //分母
+    public static int x = 0;  //分子
+    public static int y = 0;  //分母
 
-    public static void main(String[] args) {
-        System.out.println(add("1","1/3"));
-    }
 
     //两个数相加
     public static String add(String one, String two) {
