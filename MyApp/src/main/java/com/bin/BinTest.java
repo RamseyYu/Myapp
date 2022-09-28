@@ -7,6 +7,8 @@ package com.bin;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.List;
+
 import static com.bin.NumberOperate.*;
 
 public class BinTest {
@@ -69,5 +71,11 @@ public class BinTest {
         Assert.assertEquals("3/2",simplify(12,8));
     }
 
+    @Test
+    //测试中缀表达式转化为后缀表达式
+    public void  testInfixExpToSuffixExp(){
+        List<String> strings = infixExpToSuffixExp("9 + ( ( 3 + 4 ) × 5 ) - 6 ");
+        System.out.println(strings);
+    }
 
 }

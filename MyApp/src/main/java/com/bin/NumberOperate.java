@@ -3,6 +3,12 @@ package com.bin;/*
  * @description : 整数以及分数的四则运算
  */
 
+import com.sun.corba.se.spi.orb.Operation;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
+
 public class NumberOperate {
     public static int x = 0;  //通用分子
     public static int y = 0;  //通用分母
@@ -106,6 +112,75 @@ public class NumberOperate {
             remainder = a % b;
         }
         return b;
+    }
+
+
+
+    //把中缀表达式转化为后缀表达式集合
+    public static List<String> infixExpToSuffixExp(String s) {
+        List<String> infixExp = getListString(s);
+        //创建一个用来存储运算符的stack
+        Stack<String> operStack = new Stack<>();
+        //创建一个用来临时存储计算结果的operList
+        List<String> resList = new ArrayList<>();
+        //遍历infixExp
+        for (String item : infixExp) {
+            //如果是一个数，加入resList
+            // 匹配正数，负数，小数的正则表达式: ^(\-|\+)?\d+(\.\d+)?$
+            if (isNumber(item)) {
+                resList.add(item);
+            } else if (item.equals("(")) {
+                operStack.push(item);
+            } else if (item.equals(")")) {
+                //如果是又括号，则依次弹出operStack中的运算符，并压入resList，直到遇到左括号为止，此时将这对括号丢弃
+                while (!operStack.peek().equals("(")) {
+                    resList.add(operStack.pop());
+                }
+                operStack.pop(); //消除左括号！！！
+            } else {
+                //当item的优先级小于等于栈顶的优先级时
+                while (operStack.size() != 0 &&
+                        priority(item.charAt(0)) <= priority(operStack.peek().charAt(0))) {
+                    resList.add(operStack.pop());
+                }
+                //还要将item压入栈
+                operStack.push(item);
+            }
+        }
+        ///将operStack中剩余的运算符依次加入resList中
+        while (operStack.size() != 0) {
+            resList.add(operStack.pop());
+        }
+        return resList;
+    }
+
+    //判断字符串是不是数据
+    public static boolean isNumber(String s) {
+        if (!s.equals("×") && !s.equals("÷") && !s.equals("(") && !s.equals(")") && !s.equals("+") && !s.equals("-")) {
+            return true;
+        }
+        return false;
+    }
+
+    //返回运算符的优先级，用数字表示
+    public static int priority(int oper) {
+        if (oper == '×' || oper == '÷')
+            return 1;
+        if (oper == '+' || oper == '-')
+            return 0;
+        return -1;
+    }
+
+
+    //把字符串切分为list集合
+    public static List<String> getListString(String infixExpression) {
+        // 将suffixExpression按照空格分割
+        String[] split = infixExpression.split(" ");
+        List<String> list = new ArrayList<>();
+        for (String ele : split) {
+            list.add(ele);
+        }
+        return list;
     }
 
 }
