@@ -30,6 +30,9 @@ public class Question {
     /** 数值限定范围 */
     private int range;
 
+    /** 算式类型 */
+    int equation;
+
     public void generateQuestion() {
         /** 随机生成2~4个数字 */
         // numsCount = random.nextInt(3) + 2;
@@ -51,8 +54,113 @@ public class Question {
                 }
                 /** 生成算式字符串 */
                 generateQuestionString(a,b,operator,false);
+                break;
 
+            }
+            /** 当生成三个数字 */
+            case 3 : {
+                /** 随机产生四种类型的算式 */
+                equation = random.nextInt(3) + 2;
+                /** 随机生成三个数 */
+                Type a = getRandomTypeNum(), b = getRandomTypeNum(), c = getRandomTypeNum();
+                /** 随机生成操作符 */
+                getRandomOp();
+                Operator firstOperator = ops.poll();
+                Operator secondOperator = ops.poll();
 
+                if(equation == 2 || equation == 3) {  // 表示(1 + 2) + 3 或 1 + (2 + 3)
+                    if(isNeedSwap(a, b, firstOperator)) {
+                        Type temp = a;
+                        a = b;
+                        b = temp;
+                    }
+                    // 生成算式字符串
+                    generateQuestionString(a, b, firstOperator, true);
+                    Type res = twoNumEquationCal(a, b, firstOperator);
+                    boolean isSwap = isNeedSwap(res, c, secondOperator);
+                    if(c.getNumType().getCode() == NumberType.FRACTION.getCode()) {
+                        Fraction cc = (Fraction) c;
+                        if(isSwap) {
+                            questionString.insert(0, " ").insert(0, secondOperator.getSign()).insert(0, " ");
+                            questionString.insert(0, cc.generateStr());
+                        } else {
+                            questionString.append(" ").append(secondOperator.getSign()).append(" ");
+                            questionString.append(cc.generateStr());
+                        }
+                    } else {
+                        Ordinary cc = (Ordinary) c;
+                        if(isSwap) {
+                            questionString.insert(0, " ").insert(0, secondOperator.getSign()).insert(0, " ");
+                            questionString.insert(0, cc.getValue());
+                        } else {
+                            questionString.append(" ").append(secondOperator.getSign()).append(" ");
+                            questionString.append(cc.getValue());
+                        }
+                    }
+                } else if(equation == 4) { // 1 + 2 + 3
+                    // 优先级判断，(加为1, 减为2 - 1) / 2 后为0， 乘除号运算后为1
+                    if((firstOperator.getCode() - 1) / 2 >= (secondOperator.getCode() - 1) / 2) {
+                        if(isNeedSwap(a, b, firstOperator)) {
+                            Type temp = a;
+                            a = b;
+                            b = temp;
+                        }
+                        // 生成算式字符串
+                        generateQuestionString(a, b, firstOperator, false);
+                        Type res = twoNumEquationCal(a, b, firstOperator);
+                        boolean isSwap = isNeedSwap(res, c, secondOperator);
+                        if(c.getNumType().getCode() == NumberType.FRACTION.getCode()) {
+                            Fraction cc = (Fraction) c;
+                            if(isSwap) {
+                                questionString.insert(0, " ").insert(0, secondOperator.getSign()).insert(0, " ");
+                                questionString.insert(0, cc.generateStr());
+                            } else {
+                                questionString.append(" ").append(secondOperator.getSign()).append(" ");
+                                questionString.append(cc.generateStr());
+                            }
+                        } else {
+                            Ordinary cc = (Ordinary) c;
+                            if(isSwap) {
+                                questionString.insert(0, " ").insert(0, secondOperator.getSign()).insert(0, " ");
+                                questionString.insert(0, cc.getValue());
+                            } else {
+                                questionString.append(" ").append(secondOperator.getSign()).append(" ");
+                                questionString.append(cc.getValue());
+                            }
+                        }
+                    } else {
+                        if(isNeedSwap(b, c, secondOperator)) {
+                            Type temp = b;
+                            b = c;
+                            c = temp;
+                        }
+                        // 生成算式字符串
+                        generateQuestionString(b, c, secondOperator, false);
+                        Type res = twoNumEquationCal(b, c, secondOperator);
+                        boolean isSwap = isNeedSwap(a, res, firstOperator);
+                        if(a.getNumType().getCode() == NumberType.FRACTION.getCode()) {
+                            Fraction aa = (Fraction) a;
+                            if(isSwap) {
+                                questionString.append(" ").append(firstOperator.getSign()).append(" ");
+                                questionString.append(aa.generateStr());
+                            } else {
+                                questionString.insert(0, " ").insert(0, firstOperator.getSign()).insert(0, " ");
+                                questionString.insert(0, aa.generateStr());
+                            }
+                        } else {
+                            Ordinary aa = (Ordinary) a;
+                            if(isSwap) {
+                                questionString.append(" ").append(firstOperator.getSign()).append(" ");
+                                questionString.append(aa.getValue());
+                            } else {
+                                questionString.insert(0, " ").insert(0, firstOperator.getSign()).insert(0, " ");
+                                questionString.insert(0, aa.getValue());
+                            }
+                        }
+                    }
+                }
+                questionString.append(" ").append("=");
+                break;
             }
         }
     }
