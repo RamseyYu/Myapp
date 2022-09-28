@@ -36,7 +36,7 @@ public class Question {
     public void generateQuestion() {
         /** 随机生成2~4个数字 */
         // numsCount = random.nextInt(3) + 2;
-        numsCount = 2;
+        numsCount = 4;
         range = 10;
         switch (numsCount) {
             /** 当生成两个数字 */
@@ -76,26 +76,16 @@ public class Question {
                     }
                     // 生成算式字符串
                     generateQuestionString(a, b, firstOperator, true);
-                    Type res = twoNumEquationCal(a, b, firstOperator);
-                    boolean isSwap = isNeedSwap(res, c, secondOperator);
+//                    Type res = cal(a, b, firstOperator);
+//                    boolean isSwap = isNeedSwap(res, c, secondOperator);
                     if(c.getNumType().getCode() == NumberType.FRACTION.getCode()) {
                         Fraction cc = (Fraction) c;
-                        if(isSwap) {
-                            questionString.insert(0, " ").insert(0, secondOperator.getSign()).insert(0, " ");
-                            questionString.insert(0, cc.generateStr());
-                        } else {
-                            questionString.append(" ").append(secondOperator.getSign()).append(" ");
-                            questionString.append(cc.generateStr());
-                        }
+                        questionString.insert(0, " ").insert(0, secondOperator.getSign()).insert(0, " ");
+                        questionString.insert(0, cc.generateStr());
                     } else {
                         Ordinary cc = (Ordinary) c;
-                        if(isSwap) {
-                            questionString.insert(0, " ").insert(0, secondOperator.getSign()).insert(0, " ");
-                            questionString.insert(0, cc.getValue());
-                        } else {
-                            questionString.append(" ").append(secondOperator.getSign()).append(" ");
-                            questionString.append(cc.getValue());
-                        }
+                        questionString.insert(0, " ").insert(0, secondOperator.getSign()).insert(0, " ");
+                        questionString.insert(0, cc.getValue());
                     }
                 } else if(equation == 4) { // 1 + 2 + 3
                     // 优先级判断，(加为1, 减为2 - 1) / 2 后为0， 乘除号运算后为1
@@ -107,26 +97,16 @@ public class Question {
                         }
                         // 生成算式字符串
                         generateQuestionString(a, b, firstOperator, false);
-                        Type res = twoNumEquationCal(a, b, firstOperator);
-                        boolean isSwap = isNeedSwap(res, c, secondOperator);
+//                        Type res = cal(a, b, firstOperator);
+//                        boolean isSwap = isNeedSwap(res, c, secondOperator);
                         if(c.getNumType().getCode() == NumberType.FRACTION.getCode()) {
                             Fraction cc = (Fraction) c;
-                            if(isSwap) {
-                                questionString.insert(0, " ").insert(0, secondOperator.getSign()).insert(0, " ");
-                                questionString.insert(0, cc.generateStr());
-                            } else {
-                                questionString.append(" ").append(secondOperator.getSign()).append(" ");
-                                questionString.append(cc.generateStr());
-                            }
+                            questionString.insert(0, " ").insert(0, secondOperator.getSign()).insert(0, " ");
+                            questionString.insert(0, cc.generateStr());
                         } else {
                             Ordinary cc = (Ordinary) c;
-                            if(isSwap) {
-                                questionString.insert(0, " ").insert(0, secondOperator.getSign()).insert(0, " ");
-                                questionString.insert(0, cc.getValue());
-                            } else {
-                                questionString.append(" ").append(secondOperator.getSign()).append(" ");
-                                questionString.append(cc.getValue());
-                            }
+                            questionString.insert(0, " ").insert(0, secondOperator.getSign()).insert(0, " ");
+                            questionString.insert(0, cc.getValue());
                         }
                     } else {
                         if(isNeedSwap(b, c, secondOperator)) {
@@ -136,30 +116,75 @@ public class Question {
                         }
                         // 生成算式字符串
                         generateQuestionString(b, c, secondOperator, false);
-                        Type res = twoNumEquationCal(b, c, secondOperator);
-                        boolean isSwap = isNeedSwap(a, res, firstOperator);
+//                        Type res = cal(b, c, secondOperator);
+//                        boolean isSwap = isNeedSwap(a, res, firstOperator);
                         if(a.getNumType().getCode() == NumberType.FRACTION.getCode()) {
                             Fraction aa = (Fraction) a;
-                            if(isSwap) {
-                                questionString.append(" ").append(firstOperator.getSign()).append(" ");
-                                questionString.append(aa.generateStr());
-                            } else {
-                                questionString.insert(0, " ").insert(0, firstOperator.getSign()).insert(0, " ");
-                                questionString.insert(0, aa.generateStr());
-                            }
+                            questionString.append(" ").append(firstOperator.getSign()).append(" ");
+                            questionString.append(aa.generateStr());
                         } else {
                             Ordinary aa = (Ordinary) a;
-                            if(isSwap) {
-                                questionString.append(" ").append(firstOperator.getSign()).append(" ");
-                                questionString.append(aa.getValue());
-                            } else {
-                                questionString.insert(0, " ").insert(0, firstOperator.getSign()).insert(0, " ");
-                                questionString.insert(0, aa.getValue());
-                            }
+                            questionString.append(" ").append(firstOperator.getSign()).append(" ");
+                            questionString.append(aa.getValue());
                         }
                     }
                 }
-                questionString.append(" ").append("=");
+                System.out.println(questionString);
+                break;
+            }
+            /** 当生成四个数字 */
+            case 4 : {
+                // 算式5~7号
+                equation = random.nextInt(3)+5;
+                // 随机生成四个数
+                Type a = getRandomTypeNum(), b = getRandomTypeNum(), c = getRandomTypeNum(), d = getRandomTypeNum();
+                // 随机生成操作符
+                getRandomOp();
+                Operator firstOP = ops.poll();
+                Operator secondOP = ops.poll();
+                Operator thirdOP = ops.poll();
+                if(equation == 5 || equation == 6 || equation == 7) {
+                    if(isNeedSwap(a, b, firstOP)) {
+                        Type temp = a;
+                        a = b;
+                        b = temp;
+                    };
+                    // 生成算式字符串
+                    generateQuestionString(a, b, firstOP, true);
+                    if((secondOP.getCode() - 1) / 2 >= (thirdOP.getCode() - 1) / 2) {
+                        if(c.getNumType().getCode() == NumberType.FRACTION.getCode()) {
+                            Fraction cc = (Fraction) c;
+                            questionString.insert(0, " ").insert(0, secondOP.getSign()).insert(0, " ");
+                            questionString.insert(0, cc.generateStr());
+                        } else {
+                            Ordinary cc = (Ordinary) c;
+                            questionString.insert(0, " ").insert(0, secondOP.getSign()).insert(0, " ");
+                            questionString.insert(0, cc.getValue());
+                        }
+                        if(d.getNumType().getCode() == NumberType.FRACTION.getCode()) {
+                            Fraction dd = (Fraction) d;
+                            questionString.insert(0, " ").insert(0, thirdOP.getSign()).insert(0, " ");
+                            questionString.insert(0, dd.generateStr());
+                        } else {
+                            Ordinary dd = (Ordinary) d;
+                            questionString.insert(0," ").insert(0, thirdOP.getSign()).insert(0, " ");
+                            questionString.insert(0, dd.getValue());
+                        }
+                    } else {
+                        if(isNeedSwap(c, d, thirdOP)) {
+                            Type temp = c;
+                            c = d;
+                            d = temp;
+                        };
+
+                        String temp = questionString.toString();
+                        questionString = new StringBuilder();
+                        generateQuestionString(c, d, thirdOP, false);
+                        questionString.append(" ").append(secondOP.getSign()).append(" ");
+                        questionString.append(temp);
+                    }
+                }
+                System.out.println(questionString);
                 break;
             }
         }
@@ -214,7 +239,7 @@ public class Question {
     public void generateQuestionString(Type a, Type b, Operator operator, Boolean hasBreaket) {
         /** hasBreaket为true时，添加括号 */
         if(hasBreaket) {
-            questionString.append("(");
+            questionString.append("( ");
         }
         /** 获取数字的类型 */
         int aType = a.numberType.getCode(), bType = b.getNumType().getCode();
@@ -238,9 +263,9 @@ public class Question {
         }
         /** hasBreaket为true时，添加括号 */
         if(hasBreaket) {
-            questionString.append(")");
+            questionString.append(" )");
         }
-        System.out.println(questionString);
+
     }
 
     /** 判断是否有减号，且结果为负数 */
@@ -251,4 +276,7 @@ public class Question {
         }
         return false;
     }
+
+
+
 }
