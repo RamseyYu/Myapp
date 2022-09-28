@@ -24,11 +24,31 @@ public class BinTest {
     //测试数据减法
     @Test
     public void testSubtract(){
-        Assert.assertEquals(null,subtract("1/2", "2/3"));
+        Assert.assertNull(subtract("1/2", "2/3"));
         Assert.assertEquals("0",subtract("1","1"));
         Assert.assertEquals("2/3",subtract("1","1/3"));
         Assert.assertEquals("1/3",subtract("1/3","0"));
     }
+
+    //测试数据乘法
+    @Test
+    public void testMultiply(){
+        Assert.assertEquals("2",multiply("1","2"));
+        Assert.assertEquals("0",multiply("1","0"));
+        Assert.assertEquals("2/3",multiply("1/3","2"));
+        Assert.assertEquals("1/8",multiply("1/4","1/2"));
+        Assert.assertEquals("1/4",multiply("3/4","1/3"));
+    }
+
+    //测试数据除法
+    @Test
+    public void testDivide(){
+        Assert.assertEquals("3/4",divide("3/4","1"));
+        Assert.assertEquals("0",divide("0","1"));
+        Assert.assertEquals("1",divide("3/4","3/4"));
+        Assert.assertEquals("9/16",divide("3/4","4/3"));
+    }
+
 
     @Test
     //测试提取最大公约数
@@ -37,6 +57,7 @@ public class BinTest {
         Assert.assertEquals(1,gcd(1,3));
         Assert.assertEquals(1,gcd(3,1));
         Assert.assertEquals(2,gcd(18,4));
+        Assert.assertEquals(1,gcd(0,4));
     }
 
     @Test
@@ -47,4 +68,6 @@ public class BinTest {
         Assert.assertEquals("3",simplify(12,4));
         Assert.assertEquals("3/2",simplify(12,8));
     }
+
+
 }
