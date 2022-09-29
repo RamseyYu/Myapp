@@ -211,7 +211,6 @@ public class NumberOperate {
         return stack.pop();
     }
 
-
     public static String cal(String num1, String num2, int operator) {
         String res = ""; // 存放计算结果
         switch (operator) {

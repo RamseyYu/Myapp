@@ -13,7 +13,7 @@ import static com.bin.NumberOperate.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        myStoreQuestion("D:\\question.txt",1000);
+        myStoreQuestion("D:\\question.txt",100,10);
         Properties question = myLoad("D:\\question.txt");
         Properties answer = myLoad("D:\\answer.txt");
         compareAnswer(question,answer);

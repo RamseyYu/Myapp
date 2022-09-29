@@ -27,11 +27,11 @@ public class FileOperate {
 
 
     //向指定文件写入表达式集合数据(判断如果出现负数就不写入文件中)
-    public static void myStoreQuestion(String place, int sum) throws IOException {
+    public static void myStoreQuestion(String place, int sum ,int range) throws IOException {
         Properties prop = new Properties();
         int index = 1;
-        while (index <=sum) {
-            Question question = new Question();
+        while (index <=sum) {//如果出现负数就重新生成题目
+            Question question = new Question(range);
             String s = question.generateQuestion();
             System.out.println(s);
             if (lastPolandExpression(s)!= null) {

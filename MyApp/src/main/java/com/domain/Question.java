@@ -9,6 +9,10 @@ import java.util.Queue;
 import java.util.Random;
 
 public class Question {
+    public Question(int range) {
+        this.range = range;
+    }
+
     /** 数字的数量 */
     int numsCount;
 
@@ -21,9 +25,6 @@ public class Question {
     /** 题目字符串 */
     private StringBuilder questionString = new StringBuilder();
 
-    /** 题目答案 */
-    private Type answer = new Ordinary();
-
     /** 随机对象 */
     private Random random = new Random();
 
@@ -35,8 +36,8 @@ public class Question {
 
     public String generateQuestion() {
         /** 随机生成2~4个数字 */
-//        numsCount = random.nextInt(3) + 2;
-        numsCount = 4;
+        numsCount = random.nextInt(3) + 2;
+//        numsCount = 4;
         range = 10;
         switch (numsCount) {
             /** 当生成两个数字 */
