@@ -35,7 +35,7 @@ public class Question {
 
     public String generateQuestion() {
         /** 随机生成2~4个数字 */
-        // numsCount = random.nextInt(3) + 2;
+//        numsCount = random.nextInt(3) + 2;
         numsCount = 4;
         range = 10;
         switch (numsCount) {
@@ -129,7 +129,6 @@ public class Question {
                         }
                     }
                 }
-                System.out.println(questionString);
                 break;
             }
             /** 当生成四个数字 */

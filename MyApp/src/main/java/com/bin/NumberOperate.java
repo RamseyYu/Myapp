@@ -228,8 +228,9 @@ public class NumberOperate {
                 res = multiply(num1, num2);
                 break;
             case '÷':
-                if (num1.equals("0"))
-                    throw new RuntimeException("0不能作为除数！");
+                if (num1.equals("0")){
+                    return null;
+                }
                 res = divide(num2, num1);
                 break;
             default:

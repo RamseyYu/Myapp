@@ -1,19 +1,21 @@
 package com.main;
 
+import com.bin.FileOperate;
 import com.domain.Question;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+
+import static com.bin.FileOperate.*;
+import static com.bin.NumberOperate.*;
 
 public class Main {
-    public static void main(String[] args) {
-        int b = 3;
-        List<String> list = new ArrayList<String>();
-        for (int i = 0; i < b; i++) {
-            Question question = new Question();
-            String s1 = question.generateQuestion();
-            list.add(s1);
-        }
-        System.out.println(list);
+    public static void main(String[] args) throws IOException {
+        myStoreQuestion("D:\\question.txt",1000);
+        Properties question = myLoad("D:\\question.txt");
+        Properties answer = myLoad("D:\\answer.txt");
+        compareAnswer(question,answer);
     }
 }
