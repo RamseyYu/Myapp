@@ -33,7 +33,7 @@ public class Question {
     /** 算式类型 */
     int equation;
 
-    public void generateQuestion() {
+    public String generateQuestion() {
         /** 随机生成2~4个数字 */
         // numsCount = random.nextInt(3) + 2;
         numsCount = 4;
@@ -184,10 +184,11 @@ public class Question {
                         questionString.append(temp);
                     }
                 }
-                System.out.println(questionString);
+//                System.out.println(questionString);
                 break;
             }
         }
+        return questionString.toString();
     }
 
 
