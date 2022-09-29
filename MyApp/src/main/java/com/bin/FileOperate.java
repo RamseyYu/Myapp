@@ -27,21 +27,25 @@ public class FileOperate {
 
 
     //向指定文件写入表达式集合数据(判断如果出现负数就不写入文件中)
-    public static void myStoreQuestion(String place, int sum ,int range) throws IOException {
-        Properties prop = new Properties();
+    public static void myStoreQuestion(String questionPlace,String answerPlace, int sum ,int range) throws IOException {
+        Properties questionProp = new Properties();
+        Properties answerProp = new Properties();
         int index = 1;
         while (index <=sum) {//如果出现负数就重新生成题目
             Question question = new Question(range);
             String s = question.generateQuestion();
-            System.out.println(s);
             if (lastPolandExpression(s)!= null) {
-                prop.setProperty("" + index, s);
+                questionProp.setProperty("" + index, s);
+                answerProp.setProperty(""+index,lastPolandExpression(s));
                 index++;
             }
         }
-        FileWriter fw = new FileWriter(place);
-        prop.store(fw, null);
-        fw.close();
+        FileWriter fw1 = new FileWriter(questionPlace);
+        questionProp.store(fw1, null);
+        FileWriter fw2 = new FileWriter(answerPlace);
+        answerProp.store(fw2, null);
+        fw1.close();
+        fw2.close();
     }
 
     //比较上传的答案是否正确,第一个参数是题目集合,第二个参数是结果集合
