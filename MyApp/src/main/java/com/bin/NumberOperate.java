@@ -1,9 +1,9 @@
-package com.bin;/*
+package com.bin;
+/*
  * @author : bin
  * @description : 整数以及分数的四则运算
  */
 
-import com.sun.corba.se.spi.orb.Operation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -162,10 +162,10 @@ public class NumberOperate {
     }
 
     //返回运算符的优先级，用数字表示
-    public static int priority(int oper) {
-        if (oper == '×' || oper == '÷')
+    public static int priority(int operator) {
+        if (operator == '×' || operator == '÷')
             return 1;
-        if (oper == '+' || oper == '-')
+        if (operator == '+' || operator == '-')
             return 0;
         return -1;
     }
@@ -182,13 +182,9 @@ public class NumberOperate {
         return list;
     }
 
-    /**
-     * 计算逆波兰表达式
-     *
-     * @param list 用来存储表达式
-     * @return 返回最终计算结果
-     */
-    public static String lastPolandExpression(List<String> list) {
+    //对于给定的字符串转化为后缀表达式集合,然后对于后缀表达式运算
+    public static String lastPolandExpression(String operate) {
+        List<String> list = infixExpToSuffixExp(operate);
         //创建一个栈
         Stack<String> stack = new Stack<>();
         //遍历存储表达式的list集合
@@ -204,6 +200,9 @@ public class NumberOperate {
                 String num1 = stack.pop();
                 String num2 = stack.pop();
                 String result = cal(num1, num2, s);
+                if (result == null){
+                    return null;
+                }
                 //最后将计算结果压入栈中
                 stack.push(String.valueOf(result));
             }
@@ -213,14 +212,17 @@ public class NumberOperate {
     }
 
 
-    public static String cal(String num1, String num2, int oper) {
+    public static String cal(String num1, String num2, int operator) {
         String res = ""; // 存放计算结果
-        switch (oper) {
+        switch (operator) {
             case '+':
                 res = add(num1, num2);
                 break;
             case '-':
                 res = subtract(num2, num1);
+                if (res == null){ //运算过程中出现负数返回null
+                    return null;
+                }
                 break;
             case '×':
                 res = multiply(num1, num2);

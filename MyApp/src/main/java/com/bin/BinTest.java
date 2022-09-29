@@ -7,9 +7,13 @@ package com.bin;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import static com.bin.NumberOperate.*;
+import static com.bin.FileOperate.*;
 
 public class BinTest {
 
@@ -83,9 +87,24 @@ public class BinTest {
     @Test
     //测试后缀表达式计算器
     public void testLastPolandExpression(){
-        String  v = lastPolandExpression(infixExpToSuffixExp("( ( 9 + 3 ) + 4/5 ) × 5 - 6 "));
-        String a = lastPolandExpression(infixExpToSuffixExp("( 1/3 + 1 ) × 2"));
-        System.out.println(v);
-        System.out.println(a);
+        Assert.assertEquals("25/2",lastPolandExpression("5 ÷ 2/6 ÷ ( 3/5 ÷ 5/10 )"));
+        Assert.assertEquals("40/3",lastPolandExpression("7 ÷ 3/9 ÷ ( 7/8 ÷ 5/9 )"));
+        Assert.assertEquals("33/5",lastPolandExpression("9 × 9/10 - ( 5/10 × 3 )"));
+        Assert.assertEquals("158/15",lastPolandExpression("2 × 5 + ( 2/3 × 8/10 )"));
     }
+
+    @Test
+    //测试表达式的写入,答案读取,以及结果比对
+    public void testCompare() throws IOException {
+        ArrayList<String> strings = new ArrayList<>();
+        strings.add("5 ÷ 2/6 ÷ ( 3/5 ÷ 5/10 )");
+        strings.add("7 ÷ 3/9 ÷ ( 7/8 ÷ 5/9 )");
+        strings.add("9 × 9/10 - ( 5/10 × 3 )");
+        strings.add("2 × 5 + ( 2/3 × 8/10 )");
+        myStore("D:\\question.txt",strings);
+        Properties question = myLoad("D:\\question.txt");
+        Properties answer = myLoad("D:\\answer.txt");
+        compareAnswer(question,answer);
+    }
+
 }
